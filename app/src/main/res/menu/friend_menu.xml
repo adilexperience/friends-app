@@ -11,4 +11,9 @@
         android:icon="@drawable/ic_baseline_message_24"
         />
 
+    <item android:id="@+id/pictureFriend"
+        android:title="Take a picture"
+        android:icon="@drawable/ic_baseline_image_24"
+        />
+
 </menu>

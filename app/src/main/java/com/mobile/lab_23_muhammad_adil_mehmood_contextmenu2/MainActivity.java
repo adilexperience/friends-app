@@ -18,10 +18,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+    private static final int CAMERA_REQUEST = 1888;
+    private static final int MY_CAMERA_PERMISSION_CODE = 100;
 
     private ListView listView;
     private String friends[] = {
@@ -77,11 +80,20 @@ public class MainActivity extends AppCompatActivity {
                 AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                 int index = info.position;
                 callFriend(index);
-                Toast.makeText(getApplicationContext(), friends[index] + "", Toast.LENGTH_LONG).show();
                 return true;
             case R.id.messageFriend:
-                Toast.makeText(getApplicationContext(), "Message friend", Toast.LENGTH_LONG).show();
                 startActivity(new Intent(MainActivity.this, SendMessage.class));
+                return true;
+            case R.id.pictureFriend:
+                if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+                {
+                    requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
+                }
+                else
+                {
+                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                }
                 return true;
             default:
                 return super.onContextItemSelected(item);
